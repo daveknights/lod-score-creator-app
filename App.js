@@ -1,7 +1,9 @@
 import { StyleSheet, StatusBar, Dimensions, Text, View, Pressable } from 'react-native';
 import SymbolContainer from './components/SymbolContainer';
 import Score from './components/Score';
+import Pagination from './components/Pagination';
 import { useState } from 'react';
+import buttonStyles from './style_partials/buttonStyles';
 
 const uid = position => Math.floor(Math.random() * 1000000) + position;
 
@@ -12,6 +14,10 @@ export default function App() {
     const [pageSymbolCount, setPageSymbolCount] = useState(0);
 
     const addSymbol = ([char, name]) => {
+        if(pageSymbolCount === 32) {
+            return;
+        }
+
         let key;
 
         key = [`${name.toLowerCase()}-${uid(Object.keys(scoreSymbols).length)}`];
@@ -51,18 +57,44 @@ export default function App() {
         setPageSymbolCount(0);
     };
 
+    const handleAddNewPage = () => {
+        setPageNum(pageNum => pageNum + 1);
+        setPageCount(pageCount => pageCount + 1);
+    };
+
+    const handleDeletePage = () => {
+        setPageNum(pageNum => pageNum - 1);
+        setPageCount(pageCount => pageCount - 1);
+    }
+
+    const handlePrevPage = () => setPageNum(pageNum => pageNum - 1);
+
+    const handleNextPage = () => setPageNum(pageNum => pageNum + 1);
+
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>LOD Score Creator</Text>
             <SymbolContainer  onSymbolPress={handleSymbolPress} />
-            {/* <View style={{width: Dimensions.get('window').width - 60, ...styles.score}}> */}
-                <Score pageSymbols={getPageSymbols()} pageNum={pageCount} />
-            {/* </View> */}
+                <View style={{width: Dimensions.get('window').width - 60, marginLeft: 'auto'}}>
+                    <Score
+                        pageSymbols={getPageSymbols()}
+                        pageNum={pageNum}
+                        pageCount={pageCount}
+                        pageSymbolCount={pageSymbolCount} />
+                    {Object.keys(scoreSymbols).length >= 32 && <Pagination
+                                                                pageSymbolCount={pageSymbolCount}
+                                                                handleAddNewPage={handleAddNewPage}
+                                                                handleDeletePage={handleDeletePage}
+                                                                currentPage={pageNum}
+                                                                pageCount={pageCount}
+                                                                handlePrevPage={handlePrevPage}
+                                                                handleNextPage={handleNextPage} />}
+                </View>
             <View style={styles.buttonContainer}>
-                <Pressable style={{...styles.button, ...styles.orangeButton}}>
+                <Pressable style={{...styles.button, ...styles.orangeButton, width: '49%'}}>
                     <Text style={{...styles.buttonText, ...styles.orangeButtonText}}>Download</Text>
                 </Pressable>
-                <Pressable style={{...styles.button, ...styles.bluebutton}} onPress={handleClearScore}>
+                <Pressable style={{...styles.button, ...styles.bluebutton, width: '49%', marginLeft: 'auto'}} onPress={handleClearScore}>
                 <Text style={{...styles.buttonText, ...styles.blueButtonText}}>Clear</Text>
             </Pressable>
             </View>
@@ -90,7 +122,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         aspectRatio: 3/4,
         elevation: 5,
-        marginLeft: 'auto',
     },
     buttonContainer: {
         borderTopColor: '#aaa',
@@ -99,29 +130,5 @@ const styles = StyleSheet.create({
         marginTop: 'auto',
         paddingVertical: 6,
     },
-    button: {
-        alignItems: 'center',
-        borderRadius: 3,
-        height: 50,
-        justifyContent: 'center',
-        width: '49%',
-    },
-    buttonText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    orangeButton: {
-        backgroundColor: '#f37c64',
-        marginRight: '1%',
-    },
-    orangeButtonText: {
-        color: '#363636',
-    },
-    bluebutton: {
-        backgroundColor: '#499797',
-        marginLeft: '1%',
-    },
-    blueButtonText: {
-        color: '#fff',
-    }
+    ...buttonStyles
 });

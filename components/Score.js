@@ -1,7 +1,7 @@
-import { StyleSheet, Dimensions, View, FlatList, Pressable, Text }  from 'react-native';
+import { StyleSheet, Dimensions, View, Pressable, Text }  from 'react-native';
 import { Fragment } from 'react';
 
-const Score = ({pageSymbols, pageNum}) => {
+const Score = ({pageSymbols, pageNum, pageCount, pageSymbolCount}) => {
     const getColumn = index => {
         let col;
 
@@ -25,7 +25,8 @@ const Score = ({pageSymbols, pageNum}) => {
 
     return (
         <View style={{width: Dimensions.get('window').width - 60, ...styles.page}}>
-            {pageNum === 1 ? <View style={styles.startSymbol}><View style={styles.doubleLine}></View></View> : <View className={{...continueSymbol, ...continueBtm}}></View>}
+            {pageNum === 1 ? <View style={styles.startSymbol}><View style={styles.doubleLine}></View></View> :
+                                <View style={{...styles.continueSymbol, ...styles.continueBtm}}><View style={styles.singleLine}></View></View>}
             {pageSymbols.map(([key,symbol], index) => {
                 let topContinue;
                 let bottomContinue;
@@ -55,6 +56,9 @@ const Score = ({pageSymbols, pageNum}) => {
                             {topContinue}
                         </Fragment>;
             })}
+            {(pageCount > pageNum && pageSymbolCount === 32) && <View style={{...styles.continueSymbol, ...styles.continueTop, ...styles.col4}}>
+                                                                    <View style={styles.singleLine}></View>
+                                                                </View>}
         </View>
     );
 };
@@ -65,7 +69,6 @@ const styles = StyleSheet.create({
         aspectRatio: 3/4,
         backgroundColor: 'white',
         elevation: 5,
-        marginLeft: 'auto',
     },
     symbolTile: {
         position: 'absolute',
