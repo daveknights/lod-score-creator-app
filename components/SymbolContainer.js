@@ -15,6 +15,16 @@ const symbols = [
     {id: 'stillness', char: 9, name: 'Stillness'}
 ];
 const containerHeight = (Object.keys(symbols).length * 49) + 48;
+const rotateIcon = new Animated.Value(0);
+const interpolateRotating = rotateIcon.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
+const animatedStyle = {
+    transform: [{
+        rotate: interpolateRotating,
+    }]
+};
 
 const SymbolContainer = ({onSymbolPress}) => {
     const [isReady, setIsReady] = useState(false);
@@ -41,11 +51,19 @@ const SymbolContainer = ({onSymbolPress}) => {
     }
 
     const toggleContainerWidth = () => {
-        const newValue = JSON.stringify(symbolContainerWidth,["width"]) == 45 ? 140 : 45;
+        const newWidth = JSON.stringify(symbolContainerWidth,['width']) == 45 ? 140 : 45;
+
+        Animated.timing(rotateIcon,
+            {
+                toValue: newWidth == 140 ? 1 : 0,
+                duration: 250,
+                useNativeDriver: false,
+            }
+        ).start();
 
         Animated.timing(symbolContainerWidth,
             {
-                toValue: newValue,
+                toValue: newWidth,
                 duration: 250,
                 useNativeDriver: false,
             }
@@ -55,7 +73,7 @@ const SymbolContainer = ({onSymbolPress}) => {
     return (
         <Animated.View style={{width: symbolContainerWidth, ...styles.container}}>
             <Pressable style={styles.symbolNameToggle} onPress={toggleContainerWidth}>
-                <Image source={require('../images/chevron-icon.png')} style={styles.chevron} />
+                <Animated.Image source={require('../images/chevron-icon.png')} style={{...styles.chevron, ...animatedStyle}} />
             </Pressable>
             <FlatList
                 data={symbols}
