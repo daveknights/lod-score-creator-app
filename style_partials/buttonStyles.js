@@ -12,13 +12,13 @@ const buttonStyles = {
     orangeButton: {
         backgroundColor: '#f37c64',
     },
-    orangeButtonText: {
+    greyText: {
         color: '#363636',
     },
     bluebutton: {
         backgroundColor: '#499797',
     },
-    blueButtonText: {
+    whiteText: {
         color: '#fff',
     }
 };

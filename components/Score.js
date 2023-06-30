@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions, View, Pressable, Text }  from 'react-native';
 import { Fragment } from 'react';
 
-const Score = ({pageSymbols, pageNum, pageCount, pageSymbolCount}) => {
+const Score = ({pageSymbols, pageNum, pageCount, pageSymbolCount, handlePressScoreSymbol}) => {
     const getColumn = index => {
         let col;
 
@@ -50,7 +50,7 @@ const Score = ({pageSymbols, pageNum, pageCount, pageSymbolCount}) => {
 
                 return <Fragment key={`${key}${index}`}>
                             {bottomContinue}
-                            <Pressable key={key} style={{...styles.symbolTile, ...styles[`col${getColumn(index)}`], ...styles[`row${(index % 8) + 1}`]}} onPress={()=>{console.log('Press');}}>
+                            <Pressable key={key} style={{...styles.symbolTile, ...styles[`col${getColumn(index)}`], ...styles[`row${(index % 8) + 1}`]}} onPress={() => handlePressScoreSymbol(key, symbol.char)}>
                                 <Text style={styles.symbol}>{symbol.char}</Text>
                             </Pressable>
                             {topContinue}

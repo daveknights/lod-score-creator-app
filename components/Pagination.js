@@ -28,16 +28,16 @@ const Pagination = props => {
 
     return (<View style={{...styles.pagination, ...newOnly}}>
                 {prevBtn && <Pressable style={{...styles.button, ...styles.orangeButton, ...isPrevDisabled, width: '23%', marginRight: '2%'}} onPress={props.handlePrevPage} {...props.currentPage === 1 && {disabled: true}}>
-                                <Text style={{...styles.buttonText, ...styles.orangeButtonText}}>Prev</Text>
+                                <Text style={{...styles.buttonText, ...styles.greyText}}>Prev</Text>
                             </Pressable>}
                 {newPageBtn && <Pressable style={{...styles.button, ...styles.bluebutton, ...styles.pageAction}} onPress={props.handleAddNewPage}>
-                                <Text style={{...styles.buttonText, ...styles.blueButtonText}}>Add new page +</Text>
+                                <Text style={{...styles.buttonText, ...styles.whiteText}}>Add new page +</Text>
                             </Pressable>}
                 {deletePageBtn && <Pressable style={{...styles.button, ...styles.bluebutton, ...styles.pageAction}} onPress={props.handleDeletePage}>
-                                <Text style={{...styles.buttonText, ...styles.blueButtonText}}>Delete page x</Text>
+                                <Text style={{...styles.buttonText, ...styles.whiteText}}>Delete page x</Text>
                             </Pressable>}
                 {nextBtn && <Pressable  style={{...styles.button, ...styles.orangeButton, ...isNextDisabled, width: '23%', marginLeft: 'auto'}} onPress={props.handleNextPage} {...isLastPage && {disabled: true}}>
-                                <Text style={{...styles.buttonText, ...styles.orangeButtonText}}>Next</Text>
+                                <Text style={{...styles.buttonText, ...styles.greyText}}>Next</Text>
                             </Pressable>}
             </View>);
 };
